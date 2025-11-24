@@ -150,7 +150,7 @@
             color: var(--bg-color);
         }
 
-        .concept {
+        concept {
             padding: 8rem 0;
             background-color: var(--bg-color);
         }
@@ -288,6 +288,7 @@
         .gallery {
             padding: 8rem 0;
             background-color: var(--bg-color);
+            position: relative;
         }
 
         .gallery-slider {
@@ -389,7 +390,7 @@
             border-radius: 50%;
             cursor: pointer;
             z-index: 20;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -548,6 +549,27 @@
                 height: 280px;
             }
 
+            /* スマホ用のボタンを固定位置に配置し、透過表示 */
+            .gallery-prev,
+            .gallery-next {
+                position: fixed;
+                opacity: 0.3;
+                z-index: 30;
+            }
+
+            .gallery-prev.visible,
+            .gallery-next.visible {
+                opacity: 0.8;
+            }
+
+            .gallery-prev {
+                left: 1rem;
+            }
+
+            .gallery-next {
+                right: 1rem;
+            }
+
             /* Googleマップを横長に調整 */
             .map-container {
                 height: 250px;
@@ -658,7 +680,7 @@
                     </div>
                 </div>
                 <button class="gallery-prev" id="galleryPrev">&#8249;</button>
-                <button class="gallery-next" id="galleryNext">&#8250;</button>
+                <button class="gallery-next" id="gallery Next">&#8250;</button>
             </div>
         </div>
     </section>
@@ -767,10 +789,29 @@
             prevBtn.addEventListener('click', prevSlide);
             setInterval(nextSlide, 6000);
         } else {
-            // スマホ用の横スクロールボタン
+            // スマホ用の横スクロールボタン機能
+            let scrollTimeout;
+
+            // 初期状態でボタンを表示
+            prevBtn.classList.add('visible');
+            nextBtn.classList.add('visible');
+
+            // スクロール中はボタンを透過
+            gallerySlider.addEventListener('scroll', () => {
+                prevBtn.classList.remove('visible');
+                nextBtn.classList.remove('visible');
+
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    prevBtn.classList.add('visible');
+                    nextBtn.classList.add('visible');
+                }, 500);
+            });
+
             nextBtn.addEventListener('click', () => {
                 gallerySlider.scrollBy({ left: 300, behavior: 'smooth' });
             });
+
             prevBtn.addEventListener('click', () => {
                 gallerySlider.scrollBy({ left: -300, behavior: 'smooth' });
             });
