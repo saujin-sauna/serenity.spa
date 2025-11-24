@@ -150,7 +150,7 @@
             color: var(--bg-color);
         }
 
-        concept {
+        .concept {
             padding: 8rem 0;
             background-color: var(--bg-color);
         }
@@ -549,10 +549,10 @@
                 height: 280px;
             }
 
-            /* スマホ用のボタンを固定位置に配置し、透過表示 */
+            /* スマホ用のボタンをギャラリー内に配置し、透過表示 */
             .gallery-prev,
             .gallery-next {
-                position: fixed;
+                position: absolute;
                 opacity: 0.3;
                 z-index: 30;
             }
@@ -622,7 +622,7 @@
                         <span class="plan-subtitle">Quick Refresh</span>
                         <p>仕事帰りや隙間時間に。心身を素早くリセットするショートトリップ。</p>
                         <div class="plan-price">¥900</div>
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfY_q-ikayntGiaYkhkYUeiuTzRpIA8iX__vN80AyhlwDYqgA/viewform?usp=pp_url&entry.848591517=60min"
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfY_q-ikayntGiaYkhkYUeiuTzRpIA8iX__vN80AyhlwDYqgA/viewform?us p=pp_url&entry.848591517=60min"
                             target="_blank" rel="noopener noreferrer" class="book-btn">Book Now</a>
                     </div>
                 </div>
@@ -680,7 +680,7 @@
                     </div>
                 </div>
                 <button class="gallery-prev" id="galleryPrev">&#8249;</button>
-                <button class="gallery-next" id="gallery Next">&#8250;</button>
+                <button class="gallery-next" id="galleryNext">&#8250;</button>
             </div>
         </div>
     </section>
