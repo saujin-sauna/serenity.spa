@@ -335,7 +335,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%<br/> height: 100%;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.9);
             z-index: 2000;
             justify-content: center;
@@ -547,12 +548,6 @@
                 height: 280px;
             }
 
-            /* スライドボタンを非表示 */
-            .gallery-prev,
-            .gallery-next {
-                display: none;
-            }
-
             /* Googleマップを横長に調整 */
             .map-container {
                 height: 250px;
@@ -725,45 +720,61 @@
         const track = document.getElementById('galleryTrack');
         const prevBtn = document.getElementById('galleryPrev');
         const nextBtn = document.getElementById('galleryNext');
-        const slides = Array.from(track.children);
-        const totalSlides = slides.length;
-        const firstClone = slides[0].cloneNode(true);
-        const lastClone = slides[totalSlides - 1].cloneNode(true);
-        track.appendChild(firstClone);
-        track.insertBefore(lastClone, slides[0]);
-        let currentSlide = 1;
-        track.style.transform = `translateX(-${currentSlide * 100}%)`;
-        let isTransitioning = false;
+        const gallerySlider = document.querySelector('.gallery-slider');
 
-        function updateSlidePosition(withTransition = true) {
-            if (withTransition) { track.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)'; }
-            else { track.style.transition = 'none'; }
+        // スマホ判定
+        const isMobile = window.innerWidth <= 768;
+
+        if (!isMobile) {
+            // PC用のスライド機能
+            const slides = Array.from(track.children);
+            const totalSlides = slides.length;
+            const firstClone = slides[0].cloneNode(true);
+            const lastClone = slides[totalSlides - 1].cloneNode(true);
+            track.appendChild(firstClone);
+            track.insertBefore(lastClone, slides[0]);
+            let currentSlide = 1;
             track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            let isTransitioning = false;
+
+            function updateSlidePosition(withTransition = true) {
+                if (withTransition) { track.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)'; }
+                else { track.style.transition = 'none'; }
+                track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+
+            function nextSlide() {
+                if (isTransitioning) return;
+                isTransitioning = true;
+                currentSlide++;
+                updateSlidePosition();
+            }
+
+            function prevSlide() {
+                if (isTransitioning) return;
+                isTransitioning = true;
+                currentSlide--;
+                updateSlidePosition();
+            }
+
+            track.addEventListener('transitionend', () => {
+                isTransitioning = false;
+                if (currentSlide === totalSlides + 1) { currentSlide = 1; updateSlidePosition(false); }
+                if (currentSlide === 0) { currentSlide = totalSlides; updateSlidePosition(false); }
+            });
+
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
+            setInterval(nextSlide, 6000);
+        } else {
+            // スマホ用の横スクロールボタン
+            nextBtn.addEventListener('click', () => {
+                gallerySlider.scrollBy({ left: 300, behavior: 'smooth' });
+            });
+            prevBtn.addEventListener('click', () => {
+                gallerySlider.scrollBy({ left: -300, behavior: 'smooth' });
+            });
         }
-
-        function nextSlide() {
-            if (isTransitioning) return;
-            isTransitioning = true;
-            currentSlide++;
-            updateSlidePosition();
-        }
-
-        function prevSlide() {
-            if (isTransitioning) return;
-            isTransitioning = true;
-            currentSlide--;
-            updateSlidePosition();
-        }
-
-        track.addEventListener('transitionend', () => {
-            is Transitioning = false;
-            if (currentSlide === totalSlides + 1) { currentSlide = 1; updateSlidePosition(false); }
-            if (currentSlide === 0) { currentSlide = totalSlides; updateSlidePosition(false); }
-        });
-
-        nextBtn.addEventListener('click', nextSlide);
-        prevBtn.addEventListener('click', prevSlide);
-        setInterval(nextSlide, 6000);
 
         const lightbox = document.getElementById('lightbox');
         const lightboxImage = document.getElementById('lightboxImage');
