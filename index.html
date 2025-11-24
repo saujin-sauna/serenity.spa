@@ -335,8 +335,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100%<br/> height: 100%;
             background: rgba(0, 0, 0, 0.9);
             z-index: 2000;
             justify-content: center;
@@ -512,30 +511,39 @@
                 display: none;
             }
 
-            /* ギャラリーを1カラム表示に変更 */
+            /* ギャラリーを横スクロール表示に変更 */
             .gallery-slider {
-                padding: 0 1rem;
+                padding: 0;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .gallery-slider::-webkit-scrollbar {
+                display: none;
             }
 
             .gallery-track {
-                display: block;
+                display: flex;
                 transform: none !important;
                 transition: none !important;
             }
 
             .gallery-slide {
-                min-width: 100%;
+                min-width: auto;
                 padding: 0;
             }
 
             .gallery-grid {
                 display: flex;
-                flex-direction: column;
-                gap: 1.5rem;
+                flex-direction: row;
+                gap: 1rem;
+                padding: 0 1rem;
             }
 
             .gallery-item {
-                width: 100%;
+                flex: 0 0 280px;
+                width: 280px;
                 height: 280px;
             }
 
@@ -748,7 +756,7 @@
         }
 
         track.addEventListener('transitionend', () => {
-            isTransitioning = false;
+            is Transitioning = false;
             if (currentSlide === totalSlides + 1) { currentSlide = 1; updateSlidePosition(false); }
             if (currentSlide === 0) { currentSlide = totalSlides; updateSlidePosition(false); }
         });
